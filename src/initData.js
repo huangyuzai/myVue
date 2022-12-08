@@ -5,10 +5,12 @@ import observer from "./observer/index";
 export function proxy (vm, target, key) {
 	Object.defineProperty(vm, key, {
 		get () {
+			console.log(`触发了数据代理-读取`)
 			// 从 vm 上面的 target 属性对象里面取
 			return vm[target][key]
 		},
 		set(newValue) {
+			console.log(`触发了数据代理-设置`)
 			vm[target][key] = newValue
 		}
 	})
@@ -25,6 +27,7 @@ export default (vm) => {
 	observer(data)
 
 	for (let k in data) {
+		/* 代理，将 vm.xxx 形式的取值代理到 vm._data.xxx */
 		proxy(vm, '_data', k)
 	}
 }
